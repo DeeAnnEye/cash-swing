@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  * @author danie
  */
 public class LoginFrame extends javax.swing.JFrame {
-
+    public static int user;
     /**
      * Creates new form LoginFrame
      */
@@ -242,6 +242,7 @@ public class LoginFrame extends javax.swing.JFrame {
             
         ResultSet rs = st.executeQuery();
         if (rs.next()) {
+            user = rs.getInt("id");
             new MainFrame().setVisible(true);
             dispose();
         } else {
