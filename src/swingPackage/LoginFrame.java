@@ -228,6 +228,15 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
+        
+            if(jTextField1.getText().isEmpty())
+            {
+                JOptionPane.showMessageDialog(formpanel, "Please enter username");
+            }
+            if(jPasswordField1.getPassword().length == 0)
+            {
+                JOptionPane.showMessageDialog(formpanel, "Please enter password");
+            }
           String userName = jTextField1.getText();
           char[] ch= jPasswordField1.getPassword();
           String password = new String(ch);
