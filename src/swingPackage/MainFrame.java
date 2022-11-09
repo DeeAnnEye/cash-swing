@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package swingPackage;
+
 import java.sql.*;
 import java.awt.*;
 import javax.swing.*;
@@ -21,65 +22,67 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         jPanel3.setVisible(false);
-        jTable1.setDefaultRenderer(Object.class, new TableCellRenderer(){
-            private DefaultTableCellRenderer DEFAULT_RENDERER =  new DefaultTableCellRenderer();
+        jTable1.setDefaultRenderer(Object.class, new TableCellRenderer() {
+            private DefaultTableCellRenderer DEFAULT_RENDERER = new DefaultTableCellRenderer();
+
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = DEFAULT_RENDERER.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                if (row%2 == 0){
+                if (row % 2 == 0) {
                     c.setBackground(Color.WHITE);
-                }
-                else {
+                } else {
                     c.setBackground(new Color(237, 235, 235));
-                }                        
+                }
                 return c;
             }
 
         });
-        
+
         getTableData();
     }
 
-    public void getTableData(){
-        
-        int income=0,expense=0;
-         try{  
-        Class.forName("com.mysql.jdbc.Driver");  
-        Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/cashflow","root","");   
-        PreparedStatement st = con.prepareStatement("Select * from cash where user_id=?");
-        
-        LoginFrame l = new LoginFrame();
-        int user_id = l.user;
-        st.setInt(1, user_id);
-            
-        ResultSet rs = st.executeQuery();
-    
-           while(rs.next()){
-           String ctype;
-           String date = String.valueOf(rs.getDate("date"));
-           String amt = String.valueOf(rs.getInt("amt"));
-           String desc = rs.getString("description");
-           int type = rs.getInt("type");
-           if(type==1){
-                income = income+rs.getInt("amt");
-                ctype = "Income";
-           }
-           else{
-                expense = expense+rs.getInt("amt");
-                ctype = "Expense";
-           }
-           
-           String tbData[] = {date,amt,ctype,desc};
-           
-           DefaultTableModel tmodel = (DefaultTableModel)jTable1.getModel();
-           tmodel.addRow(tbData);
+    public void getTableData() {
+
+        int income = 0, expense = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashflow", "root", "");
+            PreparedStatement st = con.prepareStatement("Select * from cash where user_id=?");
+
+            LoginFrame l = new LoginFrame();
+            int user_id = l.user;
+            st.setInt(1, user_id);
+
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                String ctype;
+                String date = String.valueOf(rs.getDate("date"));
+                String amt = String.valueOf(rs.getInt("amt"));
+                String desc = rs.getString("description");
+                int type = rs.getInt("type");
+                if (type == 1) {
+                    income = income + rs.getInt("amt");
+                    ctype = "Income";
+                } else {
+                    expense = expense + rs.getInt("amt");
+                    ctype = "Expense";
+                }
+
+                String tbData[] = {date, amt, ctype, desc};
+
+                DefaultTableModel tmodel = (DefaultTableModel) jTable1.getModel();
+                tmodel.addRow(tbData);
             }
             jTextField1.setText(String.valueOf(income));
             jTextField2.setText(String.valueOf(expense));
-            
-        con.close();  
-        }catch(Exception e){ System.out.println(e);} 
+
+            con.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -420,8 +423,8 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       jPanel3.setVisible(false);
-       jButton3.setVisible(true);
+        jPanel3.setVisible(false);
+        jButton3.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -434,66 +437,62 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-         new LoginFrame().setVisible(true);
-         dispose();
+        new LoginFrame().setVisible(true);
+        dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        
-         if(jDateChooser1.getDate() == null)
-            {
-                JOptionPane.showMessageDialog(jPanel1, "Please enter start date");
-            }
-         if(jDateChooser2.getDate() == null)
-            {
-                JOptionPane.showMessageDialog(jPanel1, "Please enter end date");
-            }
-        
-        
-         SimpleDateFormat dcn = new SimpleDateFormat("yyyy-MM-dd");
-         String start_date = dcn.format(jDateChooser1.getDate() );
-         String end_date = dcn.format(jDateChooser2.getDate() );
-         int income=0,expense=0;
-         
+
+        if (jDateChooser1.getDate() == null || jDateChooser2.getDate() == null) {
+            JOptionPane.showMessageDialog(jPanel1, "Please enter start/end date");
+        }
+       
+
+        SimpleDateFormat dcn = new SimpleDateFormat("yyyy-MM-dd");
+        String start_date = dcn.format(jDateChooser1.getDate());
+        String end_date = dcn.format(jDateChooser2.getDate());
+        int income = 0, expense = 0;
+
         LoginFrame l = new LoginFrame();
         int user_id = l.user;
-        
-          try{  
-        Class.forName("com.mysql.jdbc.Driver");  
-        Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/cashflow","root","");   
-        PreparedStatement st = con.prepareStatement("Select * from cash where user_id=? and date between ? and ?");
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashflow", "root", "");
+            PreparedStatement st = con.prepareStatement("Select * from cash where user_id=? and date between ? and ?");
 
             st.setInt(1, user_id);
             st.setString(2, start_date);
-            st.setString(3, end_date);           
-            
-        ResultSet rs = st.executeQuery();
-        DefaultTableModel tmodel = (DefaultTableModel)jTable1.getModel();
-        tmodel.setRowCount(0);
+            st.setString(3, end_date);
 
-        while(rs.next()){
-           String ctype;
-           String date = String.valueOf(rs.getDate("date"));
-           String amt = String.valueOf(rs.getInt("amt"));
-           int type = rs.getInt("type");
-           if(type==1){
-                income = income+rs.getInt("amt");
-                ctype = "Income";
-           }
-           else{
-                expense = expense+rs.getInt("amt");
-                ctype = "Expense";
-           }
-           
-           String tbData[] = {date,amt,ctype};
-           
-           tmodel.addRow(tbData);
+            ResultSet rs = st.executeQuery();
+            DefaultTableModel tmodel = (DefaultTableModel) jTable1.getModel();
+            tmodel.setRowCount(0);
+
+            while (rs.next()) {
+                String ctype;
+                String date = String.valueOf(rs.getDate("date"));
+                String amt = String.valueOf(rs.getInt("amt"));
+                int type = rs.getInt("type");
+                if (type == 1) {
+                    income = income + rs.getInt("amt");
+                    ctype = "Income";
+                } else {
+                    expense = expense + rs.getInt("amt");
+                    ctype = "Expense";
+                }
+
+                String tbData[] = {date, amt, ctype};
+
+                tmodel.addRow(tbData);
             }
             jTextField1.setText(String.valueOf(income));
             jTextField2.setText(String.valueOf(expense));
-            
-        con.close();  
-        }catch(Exception e){ System.out.println(e);} 
+
+            con.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
     }//GEN-LAST:event_jButton5ActionPerformed
 

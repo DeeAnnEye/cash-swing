@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package swingPackage;
+
 import java.sql.*;
 import javax.swing.JOptionPane;
 
@@ -11,7 +12,9 @@ import javax.swing.JOptionPane;
  * @author danie
  */
 public class LoginFrame extends javax.swing.JFrame {
+
     public static int user;
+
     /**
      * Creates new form LoginFrame
      */
@@ -228,50 +231,47 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        
-            if(jTextField1.getText().isEmpty())
-            {
-                JOptionPane.showMessageDialog(formpanel, "Please enter username");
-            }
-            if(jPasswordField1.getPassword().length == 0)
-            {
-                JOptionPane.showMessageDialog(formpanel, "Please enter password");
-            }
-          String userName = jTextField1.getText();
-          char[] ch= jPasswordField1.getPassword();
-          String password = new String(ch);
-          
-          try{  
-        Class.forName("com.mysql.jdbc.Driver");  
-        Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/cashflow","root","");   
-        PreparedStatement st = con.prepareStatement("Select * from users where user_name=? and password=?");
-
-            st.setString(1, userName);
-            st.setString(2, password);  
-            
-        ResultSet rs = st.executeQuery();
-        if (rs.next()) {
-            user = rs.getInt("id");
-            new MainFrame().setVisible(true);
-            dispose();
+        if (jTextField1.getText().isEmpty() || jPasswordField1.getPassword().length == 0) {
+            JOptionPane.showMessageDialog(formpanel, "Please enter Username/Password");
         } else {
-            JOptionPane.showMessageDialog(formpanel, "Login Failed");
+
+            String userName = jTextField1.getText();
+            char[] ch = jPasswordField1.getPassword();
+            String password = new String(ch);
+
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashflow", "root", "");
+                PreparedStatement st = con.prepareStatement("Select * from users where user_name=? and password=?");
+
+                st.setString(1, userName);
+                st.setString(2, password);
+
+                ResultSet rs = st.executeQuery();
+                if (rs.next()) {
+                    user = rs.getInt("id");
+                    new MainFrame().setVisible(true);
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(formpanel, "Login Failed");
+                }
+
+                con.close();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
-        
-        con.close();  
-        }catch(Exception e){ System.out.println(e);} 
-          
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    
+
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       
+
         new RegisterFrame().setVisible(true);
-          dispose();
+        dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
