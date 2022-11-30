@@ -4,6 +4,7 @@
  */
 package swingPackage;
 
+import com.toedter.calendar.JDateChooser;
 import java.sql.*;
 import java.awt.*;
 import javax.swing.*;
@@ -54,12 +55,14 @@ public class MainFrame extends javax.swing.JFrame {
             st.setInt(1, user_id);
 
             ResultSet rs = st.executeQuery();
-
+            DefaultTableModel tmodel = (DefaultTableModel) jTable1.getModel();
+            tmodel.setRowCount(0);
             while (rs.next()) {
                 String ctype;
                 String date = String.valueOf(rs.getDate("date"));
                 String amt = String.valueOf(rs.getInt("amt"));
                 String desc = rs.getString("description");
+                String id = String.valueOf(rs.getInt("id"));
                 int type = rs.getInt("type");
                 if (type == 1) {
                     income = income + rs.getInt("amt");
@@ -69,9 +72,9 @@ public class MainFrame extends javax.swing.JFrame {
                     ctype = "Expense";
                 }
 
-                String tbData[] = {date, amt, ctype, desc};
+                String tbData[] = {id,date, amt, ctype, desc};
 
-                DefaultTableModel tmodel = (DefaultTableModel) jTable1.getModel();
+
                 tmodel.addRow(tbData);
             }
             jTextField1.setText(String.valueOf(income));
@@ -171,19 +174,28 @@ public class MainFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Date", "Amount", "Type", "Description"
+                "Log Id", "Date", "Amount", "Type", "Description"
             }
         ));
         jTable1.setRowHeight(30);
+        jTable1.setSelectionForeground(new java.awt.Color(0, 0, 0));
         jTable1.setShowGrid(false);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setMinWidth(150);
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(150);
-            jTable1.getColumnModel().getColumn(0).setMaxWidth(150);
-            jTable1.getColumnModel().getColumn(3).setMinWidth(200);
-            jTable1.getColumnModel().getColumn(3).setPreferredWidth(200);
-            jTable1.getColumnModel().getColumn(3).setMaxWidth(200);
+            jTable1.getColumnModel().getColumn(1).setMinWidth(150);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(150);
+            jTable1.getColumnModel().getColumn(1).setMaxWidth(150);
+            jTable1.getColumnModel().getColumn(3).setMinWidth(100);
+            jTable1.getColumnModel().getColumn(3).setPreferredWidth(100);
+            jTable1.getColumnModel().getColumn(3).setMaxWidth(100);
+            jTable1.getColumnModel().getColumn(4).setMinWidth(150);
+            jTable1.getColumnModel().getColumn(4).setPreferredWidth(150);
+            jTable1.getColumnModel().getColumn(4).setMaxWidth(150);
         }
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -340,16 +352,16 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(41, 41, 41)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(688, 688, 688)
+                        .addGap(709, 709, 709)
                         .addComponent(jButton1)
                         .addGap(31, 31, 31)
                         .addComponent(jButton3))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 547, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(92, 92, 92)
+                                .addGap(66, 66, 66)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -358,15 +370,15 @@ public class MainFrame extends javax.swing.JFrame {
                                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(100, 100, 100)
+                                .addGap(74, 74, 74)
                                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(121, 121, 121)
+                                .addGap(95, 95, 95)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(34, 34, 34)
+                                .addGap(8, 8, 8)
                                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -392,7 +404,7 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(62, 62, 62)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(139, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(96, 96, 96)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -425,6 +437,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         jPanel3.setVisible(false);
         jButton3.setVisible(true);
+        getTableData();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -473,6 +486,8 @@ public class MainFrame extends javax.swing.JFrame {
                 String ctype;
                 String date = String.valueOf(rs.getDate("date"));
                 String amt = String.valueOf(rs.getInt("amt"));
+                String desc = rs.getString("description");
+                String id = String.valueOf(rs.getInt("id"));
                 int type = rs.getInt("type");
                 if (type == 1) {
                     income = income + rs.getInt("amt");
@@ -482,7 +497,7 @@ public class MainFrame extends javax.swing.JFrame {
                     ctype = "Expense";
                 }
 
-                String tbData[] = {date, amt, ctype};
+                String tbData[] = {id,date, amt, ctype,desc};
 
                 tmodel.addRow(tbData);
             }
@@ -495,6 +510,125 @@ public class MainFrame extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+         JTable source = (JTable)evt.getSource();
+            int row = source.rowAtPoint( evt.getPoint() );
+            int column = 0;
+            String s=source.getModel().getValueAt(row, column)+"";
+            String a=source.getModel().getValueAt(row, 2)+"";
+            String t=source.getModel().getValueAt(row, 3)+"";
+            String d=source.getModel().getValueAt(row, 4)+"";
+//            String lDate=source.getModel().getValueAt(row, 1)+"";
+            int num = Integer.parseInt(s);
+
+            Object[] options = {"Update",
+                "Delete"};
+            int n = JOptionPane.showOptionDialog(jPanel1,
+            "What would you like to do?",
+            "Confirm Option",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,     
+            options,  
+            options[0]); 
+            
+            if(n==JOptionPane.YES_OPTION)
+            {  
+                 SimpleDateFormat dcn = new SimpleDateFormat("yyyy-MM-dd");
+        
+       
+//            JDateChooser field1 = new JDateChooser();
+            JTextField field2 = new JTextField(a);
+            JTextField field3 = new JTextField(t);
+            JTextField field4 = new JTextField(d);
+            
+            
+            Object[] message = {
+//                "Date:", field1,
+                "Amount:", field2,
+                "Type:", field3,
+                "Description:", field4,
+               
+            };
+            
+            int option = JOptionPane.showConfirmDialog(jPanel1, message, "Update Task", JOptionPane.OK_CANCEL_OPTION);
+            if (option == JOptionPane.OK_OPTION)
+            {
+//                String value1 = dcn.format(field1.getDate());
+                String value2 = field2.getText();
+                String value3 = field3.getText();
+                String value4 = field4.getText();
+      
+//                System.out.println(value3);
+         
+        try
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/cashflow", "root", "");
+            PreparedStatement st = con.prepareStatement(
+                    "update cash set amt=?,description=?,type=? where id=?");           
+           
+            
+            st.setString(1,value2);
+            st.setString(2,value4);
+            if(value3.equals("Income")){
+                st.setInt(3,1);
+            }else{
+                st.setInt(3,2);
+            }
+//            
+//            if(value1==null){
+//             st.setString(4,lDate);
+//             System.out.println(lDate);
+//            }else{
+//            st.setString(4,value1);
+//            }
+            st.setInt(4,num);
+
+            int rs = st.executeUpdate();
+
+            if (rs == 1)
+            {
+                JOptionPane.showMessageDialog(jPanel1, "CashLog updated");
+                DefaultTableModel tmodel = (DefaultTableModel) jTable1.getModel();
+                tmodel.setRowCount(0);
+                getTableData();
+               
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(jPanel1, "CashLog not updated");
+                dispose();
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+            }
+       
+            } 
+            else
+            {
+                
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashflow", "root", "");
+                PreparedStatement stm = con.prepareStatement("DELETE FROM cash where id = ?");
+                stm.setInt(1, num);
+                boolean result = stm.execute();
+//                System.out.println(result);
+               
+                JOptionPane.showMessageDialog(jPanel1, "Log Deleted");
+                getTableData();
+               
+                 } catch (Exception e) {
+                    System.out.println(e);
+                 }
+            }
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
